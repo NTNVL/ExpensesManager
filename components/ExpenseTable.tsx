@@ -1,3 +1,4 @@
+import styles from './ExpenseTable.module.css';
 import React from 'react';
 
 export type Expense = {
@@ -16,8 +17,8 @@ type State = {
 
 const ExpenseRow = (props: { expense: Expense }) => (
   <tr>
-    <td>{ props.expense.description }</td>
-    <td>$ { props.expense.value }</td>
+    <td className={ styles.td }>{ props.expense.description }</td>
+    <td className={ styles.td }>$ { props.expense.value }</td>
   </tr>
 );
 
@@ -48,7 +49,7 @@ export class ExpenseTable extends React.Component<Props, State> {
   }
 
   render() {
-    const titleRow = <tr><th colSpan={ 2 }>{ this.title }</th></tr>;
+    const titleRow = <tr><th className={ styles.th } colSpan={ 2 }>{ this.title }</th></tr>;
     const expensesRows = this.state.expenses.map(
       (expense, index) => <ExpenseRow 
         key = {index}
@@ -61,7 +62,7 @@ export class ExpenseTable extends React.Component<Props, State> {
     />
 
     return (
-      <table>
+      <table className={ styles.table }>
         <thead>
           { titleRow }
         </thead>

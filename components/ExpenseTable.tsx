@@ -32,12 +32,18 @@ export class ExpenseTable extends React.Component<Props, State> {
       value: 0
     }
   }
-  title: string;
+  titleRow: JSX.Element;
 
   constructor(props: Props) {
     super(props);
 
-    this.title = props.title;
+    this.titleRow = (
+      <tr><th
+        className={ styles.th }
+        colSpan={ 2 }>
+          { props.title }
+      </th></tr>);
+
     this.state = {
       expenses: props.expenses,
       newExpense: {
@@ -101,7 +107,6 @@ export class ExpenseTable extends React.Component<Props, State> {
   }
 
   render() {
-    const titleRow = <tr><th className={ styles.th } colSpan={ 2 }>{ this.title }</th></tr>;
     const expensesRows = this.state.expenses.map(
       (expense, index) => <ExpenseRow 
         key = {index}
@@ -110,7 +115,7 @@ export class ExpenseTable extends React.Component<Props, State> {
     const totalRow = (
       <tr>
         <td className={ styles.td }>Total</td>
-        <td className={ styles.td } colSpan= {2}>$ { this.getTotalExpenses() }</td>
+        <td className={ styles.td }>$ { this.getTotalExpenses() }</td>
       </tr>);
 
     const descriptionInput = (
@@ -145,7 +150,7 @@ export class ExpenseTable extends React.Component<Props, State> {
       <div>
         <table className={ styles.table }>
           <thead>
-            { titleRow }
+            { this.titleRow }
           </thead>
           <tbody>
             { expensesRows }

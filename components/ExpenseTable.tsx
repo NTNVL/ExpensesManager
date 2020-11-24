@@ -72,20 +72,6 @@ export class ExpenseTable extends React.Component<Props, State> {
     this.handleAddExpense = this.handleAddExpense.bind(this);
   }
 
-<<<<<<< HEAD
-=======
-  getTotalRow(): JSX.Element {
-    return (
-      <tr>
-        <td className={styles.td}>Total</td>
-        <td className={styles.td}>
-          $ {calcTotalExpenses(this.state.expenses)}
-        </td>
-      </tr>
-    );
-  }
-
->>>>>>> f5fb81f609664c3963761a4b3974c998be27c52a
   addExpense(expense: Expense): void {
     const newState = this.state;
     newState.expenses.push(expense);
@@ -160,11 +146,7 @@ export class ExpenseTable extends React.Component<Props, State> {
           <thead>{this.titleRow}</thead>
           <tbody>
             {getExpensesRows(this.state.expenses)}
-<<<<<<< HEAD
             {getTotalExpensesRow(this.state.expenses)}
-=======
-            {this.getTotalRow()}
->>>>>>> f5fb81f609664c3963761a4b3974c998be27c52a
             <tr>
               <td>{descriptionInput}</td>
               <td>{valueInput}</td>

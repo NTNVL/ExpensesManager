@@ -23,6 +23,21 @@ const ExpenseRow = (props: { expense: Expense }) => (
   </tr>
 );
 
+const calcTotalExpenses = (expenses: Expense[]): number =>
+  expenses.reduce((a, b) => a + b.value, 0);
+
+const getTotalExpensesRow = (expenses: Expense[]): JSX.Element => (
+  <tr>
+    <td className={styles.td}>Total</td>
+    <td className={styles.td}>$ {calcTotalExpenses(expenses)}</td>
+  </tr>
+);
+
+const getExpensesRows = (expenses: Expense[]): JSX.Element[] =>
+  expenses.map((expense, index) => (
+    <ExpenseRow key={index} expense={expense} />
+  ));
+
 export class ExpenseTable extends React.Component<Props, State> {
   public readonly state: State = {
     expenses: [],
@@ -57,21 +72,11 @@ export class ExpenseTable extends React.Component<Props, State> {
     this.handleAddExpense = this.handleAddExpense.bind(this);
   }
 
-  getTotalExpenses(): number {
-    let total = 0;
-    this.state.expenses.forEach((expense) => {
-      total += expense.value;
-    });
-
-    return total;
-  }
-
   addExpense(expense: Expense): void {
-    const new_expenses = this.state;
-    new_expenses.expenses.push(expense);
-    new_expenses.newExpense = { description: '', value: 0 };
+    const newState = this.state;
+    newState.expenses.push(expense);
 
-    this.setState(new_expenses);
+    this.setState(newState);
   }
 
   handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -111,17 +116,6 @@ export class ExpenseTable extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const expensesRows = this.state.expenses.map((expense, index) => (
-      <ExpenseRow key={index} expense={expense} />
-    ));
-
-    const totalRow = (
-      <tr>
-        <td className={styles.td}>Total</td>
-        <td className={styles.td}>$ {this.getTotalExpenses()}</td>
-      </tr>
-    );
-
     const descriptionInput = (
       <input
         id="getDescription"
@@ -151,8 +145,8 @@ export class ExpenseTable extends React.Component<Props, State> {
         <table className={styles.table}>
           <thead>{this.titleRow}</thead>
           <tbody>
-            {expensesRows}
-            {totalRow}
+            {getExpensesRows(this.state.expenses)}
+            {getTotalExpensesRow(this.state.expenses)}
             <tr>
               <td>{descriptionInput}</td>
               <td>{valueInput}</td>

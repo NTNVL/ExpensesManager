@@ -1,26 +1,23 @@
+import React from 'react';
 import { ExpenseTable } from '../components/ExpenseTable';
 
-let essencialExpenses = [
+const essencialExpenses = [
   {
-    description: "Energia",
-    value: 150
+    description: 'Energia',
+    value: 150,
   },
   {
-    description: "Água",
-    value: 50
+    description: 'Água',
+    value: 50,
   },
 ];
 
-let essencialExpensesTable = <ExpenseTable
-  title="Essencial"
-  expenses={ essencialExpenses } />
+const essencialExpensesTable = (
+  <ExpenseTable title="Essencial" expenses={essencialExpenses} />
+);
 
-function Home() {
-  return (
-    <div>
-      { essencialExpensesTable }
-    </div>
-  );
+function Home(): JSX.Element {
+  return <div>{essencialExpensesTable}</div>;
 }
 
 export default Home;

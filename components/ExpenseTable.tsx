@@ -1,5 +1,5 @@
 import styles from './ExpenseTable.module.css';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 export type Expense = {
   description: string,
@@ -48,6 +48,7 @@ export class ExpenseTable extends React.Component<Props, State> {
 
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
+    this.handleAddExpense = this.handleAddExpense.bind(this);
   }
 
   getTotalExpenses(): number {
@@ -83,18 +84,62 @@ export class ExpenseTable extends React.Component<Props, State> {
     })
   }
 
+  handleAddExpense(event: React.MouseEvent) {
+    event.preventDefault();
+
+    if (this.state.newExpense.description == "") {
+      alert("Por favor, digite uma descrição para a nova despesa.");
+    } else if (this.state.newExpense.value == 0) {
+      alert("Por favor, digite um valor diferente de zero para a nova despesa.");
+    } else {
+      this.addExpense(this.state.newExpense);
+
+      let newState = this.state;
+      newState.newExpense = { description: "", value: 0 };
+      this.setState(newState);
+    }
+  }
+
   render() {
     const titleRow = <tr><th className={ styles.th } colSpan={ 2 }>{ this.title }</th></tr>;
     const expensesRows = this.state.expenses.map(
       (expense, index) => <ExpenseRow 
         key = {index}
-        expense = {expense} />)
-    const totalRow = <ExpenseRow
-      expense={{
-        description: "total",
-        value: this.getTotalExpenses()
-      }}
-    />
+        expense = {expense} />);
+
+    const totalRow = (
+      <tr>
+        <td className={ styles.td }>Total</td>
+        <td className={ styles.td } colSpan= {2}>$ { this.getTotalExpenses() }</td>
+      </tr>);
+
+    const descriptionInput = (
+      <input
+        id="getDescription"
+        type="text"
+        placeholder="Descrição"
+        value={ this.state.newExpense.description }
+        onChange={ this.handleDescriptionChange }>
+      </input>);
+
+    const valueInput = (
+      <input
+        id="getValue"
+        type="number"
+        placeholder="Valor"
+        min="0"
+        step="0.1"
+        value={ this.state.newExpense.value }
+        onChange={ this.handleValueChange }>
+      </input>
+    );
+
+    const expenseBtn = (
+      <button
+        onClick={ this.handleAddExpense}>
+          +
+      </button>
+    )
 
     return (
       <div>
@@ -105,34 +150,12 @@ export class ExpenseTable extends React.Component<Props, State> {
           <tbody>
             { expensesRows }
             { totalRow }
-          </tbody>
-          <tfoot>
             <tr>
-              <td>
-                <input
-                  id="getDescription"
-                  type="text"
-                  placeholder="Descrição"
-                  value={this.state.newExpense.description}
-                  onChange={this.handleDescriptionChange}>
-                </input>
-              </td>
-              <td>
-                <input
-                  id="getValue"
-                  type="number"
-                  placeholder="Valor"
-                  min="0"
-                  step="0.1"
-                  value={this.state.newExpense.value}
-                  onChange={this.handleValueChange}>
-                </input>
-              </td>
-              <button
-                onClick={(e) => this.addExpense(this.state.newExpense)}>+
-              </button>
+              <td>{ descriptionInput }</td>
+              <td>{ valueInput }</td>
+              <td>{ expenseBtn }</td>
             </tr>
-          </tfoot>
+          </tbody>
         </table>
       </div>
     );
